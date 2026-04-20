@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "../services/supabase";
+import { FullPageSpinner } from "../components/Spinner";
 
 const AuthContext = createContext(null);
 
@@ -44,13 +45,7 @@ export function AuthProvider({ children }) {
     if (error) throw error;
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="h-12 w-12 rounded-full border-4 border-indigo-200 border-t-indigo-600 animate-spin" />
-      </div>
-    );
-  }
+  if (loading) return <FullPageSpinner />;
 
   return (
     <AuthContext.Provider value={{ user, login, signup, logout }}>

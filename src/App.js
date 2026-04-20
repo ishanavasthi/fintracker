@@ -2,6 +2,8 @@ import { Suspense, lazy } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ErrorBoundary from "./components/ErrorBoundary";
+import { FullPageSpinner } from "./components/Spinner";
 
 const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
@@ -15,19 +17,12 @@ function RootRedirect() {
   return <Navigate to={user ? "/dashboard" : "/login"} replace />;
 }
 
-function PageFallback() {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="h-12 w-12 rounded-full border-4 border-indigo-200 border-t-indigo-600 animate-spin" />
-    </div>
-  );
-}
-
 export default function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <Suspense fallback={<PageFallback />}>
+    <ErrorBoundary>
+      <BrowserRouter>
+        <AuthProvider>
+          <Suspense fallback={<FullPageSpinner />}>
           <Routes>
             <Route path="/" element={<RootRedirect />} />
             <Route path="/login" element={<Login />} />
@@ -61,5 +56,6 @@ export default function App() {
         </Suspense>
       </AuthProvider>
     </BrowserRouter>
+    </ErrorBoundary>
   );
 }

@@ -13,6 +13,8 @@ import {
   YAxis,
 } from "recharts";
 import Navbar from "../components/Navbar";
+import { SectionSpinner } from "../components/Spinner";
+import ErrorMessage from "../components/ErrorMessage";
 import { useTransactions } from "../hooks/useTransactions";
 
 const PIE_COLORS = [
@@ -109,16 +111,10 @@ export default function Dashboard() {
           </p>
         </header>
 
-        {error && (
-          <p className="mb-4 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
-            {error.message || "Failed to load data"}
-          </p>
-        )}
+        <ErrorMessage error={error} className="mb-4" />
 
         {loading ? (
-          <div className="flex justify-center py-20">
-            <div className="h-10 w-10 rounded-full border-4 border-indigo-200 border-t-indigo-600 animate-spin" />
-          </div>
+          <SectionSpinner />
         ) : (
           <>
             <section className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">

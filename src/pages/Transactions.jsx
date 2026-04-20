@@ -1,6 +1,8 @@
 import { useCallback, useMemo, useState } from "react";
 import Navbar from "../components/Navbar";
 import TransactionModal from "../components/TransactionModal";
+import { SectionSpinner } from "../components/Spinner";
+import ErrorMessage from "../components/ErrorMessage";
 import { CATEGORIES, currentMonthKey, formatMoney } from "../constants";
 import { useTransactions } from "../hooks/useTransactions";
 import { deleteTransaction } from "../services/transactions";
@@ -124,16 +126,10 @@ export default function Transactions() {
         </section>
 
         <section className="bg-white rounded-2xl shadow-md">
-          {error && (
-            <p className="m-4 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
-              {error.message || "Failed to load transactions"}
-            </p>
-          )}
+          {error && <ErrorMessage error={error} className="m-4" />}
 
           {loading ? (
-            <div className="flex justify-center py-16">
-              <div className="h-10 w-10 rounded-full border-4 border-indigo-200 border-t-indigo-600 animate-spin" />
-            </div>
+            <SectionSpinner />
           ) : sorted.length === 0 ? (
             <div className="py-16 text-center text-sm text-gray-500">
               No transactions match the current filters.
