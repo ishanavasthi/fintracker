@@ -2,6 +2,16 @@
 
 A personal finance tracker for logging income and expenses, visualizing spending, and hitting monthly budget goals — built with React and Supabase.
 
+## 🌐 **Live app:** [fintracker-three-iota.vercel.app](https://fintracker-three-iota.vercel.app/)
+
+## Demo Video
+
+▶️ **[Watch on YouTube](https://link.ishanavasthi.in/fintracker)**
+
+<a href="https://youtu.be/DZzH64QEp0Y">
+  <img src="https://img.youtube.com/vi/DZzH64QEp0Y/maxresdefault.jpg" alt="FinanceTracker demo" width="640" />
+</a>
+
 ---
 
 ## Problem Statement
