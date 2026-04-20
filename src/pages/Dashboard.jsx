@@ -45,7 +45,7 @@ function monthLabel(key) {
 }
 
 export default function Dashboard() {
-  const now = new Date();
+  const now = useMemo(() => new Date(), []);
   const currentMonth = monthKey(now);
 
   const { transactions, loading, error } = useTransactions({});
