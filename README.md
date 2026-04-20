@@ -1,70 +1,169 @@
-# Getting Started with Create React App
+# FinanceTracker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A personal finance tracker for logging income and expenses, visualizing spending, and hitting monthly budget goals — built with React and Supabase.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Problem Statement
 
-### `npm start`
+Most people have no structured, lightweight way to track personal finances without subscribing to bloated paid apps. FinanceTracker solves this with a single, focused web app that lets any individual:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Log every income and expense in one place
+- See exactly where their money is going through clear visual breakdowns
+- Set a monthly spending limit per category and watch progress in real time
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Target user: anyone who wants clarity over their personal spending without signing up for an expensive finance product.
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Features
 
-### `npm run build`
+- Email + password authentication (Supabase Auth) with protected routes
+- Dashboard with monthly income, expenses, and net-balance summary cards
+- Expenses-by-category pie chart (current month)
+- Income vs. expenses bar chart (last 6 months)
+- Recent transactions feed on the dashboard
+- Full transactions CRUD with month / category / type filters
+- Floating "Add transaction" button and modal form with auto-focused title field
+- Inline edit + delete (with confirmation) for every transaction
+- Per-category monthly budget goals with progress bars (green → yellow → red)
+- "Over budget!" warning when spending exceeds the limit
+- Responsive, mobile-first Tailwind UI
+- Loading spinners, empty states, and inline error messages everywhere
+- Lazy-loaded routes with React Router v6 + Suspense
+- Row Level Security — users can only read and write their own rows
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Tech Stack
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+| Layer              | Technology                                |
+| ------------------ | ----------------------------------------- |
+| Frontend Framework | React 18+ (functional components + hooks) |
+| Routing            | React Router v6                           |
+| Global State       | Context API (AuthContext)                 |
+| Backend / Auth     | Supabase (Auth + Postgres + RLS)          |
+| Styling            | Tailwind CSS                              |
+| Charts             | Recharts                                  |
+| Deployment         | Vercel / Netlify                          |
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Setup Instructions
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 1. Clone the repository
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+git clone https://github.com/ishanavasthi/fintracker
+cd fintracker
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### 2. Install dependencies
 
-## Learn More
+```bash
+npm install
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 3. Configure environment variables
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Copy the example file and fill in your Supabase credentials:
 
-### Code Splitting
+```bash
+cp .env.example .env
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Edit `.env`:
 
-### Analyzing the Bundle Size
+```
+REACT_APP_SUPABASE_URL=your_supabase_project_url
+REACT_APP_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Find these values in your Supabase project dashboard under **Project Settings → API**.
 
-### Making a Progressive Web App
+### 4. Set up the database
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+In the Supabase SQL editor, run the schema SQL provided in the project (creates `transactions` and `budgets` tables with RLS policies).
 
-### Advanced Configuration
+Then, under **Authentication → Providers → Email**, disable **"Confirm email"** for local development so new signups can log in immediately.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### 5. Start the dev server
 
-### Deployment
+```bash
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+The app runs at [http://localhost:3000](http://localhost:3000).
 
-### `npm run build` fails to minify
+### 6. Build for production
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```bash
+npm run build
+```
+
+---
+
+## Folder Structure
+
+```
+finance-tracker/
+├── public/
+│   ├── favicon.svg
+│   └── index.html
+├── src/
+│   ├── components/          Reusable UI (Navbar, Spinner, ErrorMessage,
+│   │                        ErrorBoundary, ProtectedRoute,
+│   │                        TransactionModal, BudgetModal)
+│   ├── pages/               Route-level screens (Login, Signup, Dashboard,
+│   │                        Transactions, Budgets, NotFound)
+│   ├── hooks/               Custom hooks (useTransactions, useBudgets)
+│   ├── context/             React Context providers (AuthContext)
+│   ├── services/            Supabase client + data-access layer
+│   │                        (supabase.js, transactions.js, budgets.js)
+│   ├── constants.js         Shared constants (categories, helpers)
+│   ├── App.js               Router + providers
+│   └── index.js             React entry point
+├── .env.example
+├── .gitignore
+├── package.json
+├── postcss.config.js
+├── tailwind.config.js
+└── README.md
+```
+
+**Rules of the architecture:**
+
+- Pages never call Supabase directly — always go through `/services`
+- Hooks wrap services and expose `{ data, loading, error, refetch }`
+- Components are presentational — no direct Supabase calls
+
+---
+
+## Screenshots
+
+<!-- > _Screenshots coming soon._ -->
+
+<table>
+  <tr>
+    <td align="center"><b>Login / Signup</b></td>
+    <td align="center"><b>Dashboard</b></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/login.png" alt="Login / Signup" width="420" /></td>
+    <td><img src="screenshots/dashboard.png" alt="Dashboard" width="420" /></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Transactions</b></td>
+    <td align="center"><b>Budgets</b></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/transactions.png" alt="Transactions" width="420" /></td>
+    <td><img src="screenshots/budget.png" alt="Budgets" width="420" /></td>
+  </tr>
+</table>
+
+---
+
+## License
+
+MIT
