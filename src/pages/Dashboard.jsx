@@ -28,7 +28,7 @@ const PIE_COLORS = [
 function formatMoney(n) {
   return new Intl.NumberFormat(undefined, {
     style: "currency",
-    currency: "USD",
+    currency: "INR",
     maximumFractionDigits: 2,
   }).format(n || 0);
 }
